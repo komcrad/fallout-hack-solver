@@ -1,7 +1,16 @@
-(ns fallout-hack-solver.core)
+(ns fallout-hack-solver.core
+  (:gen-class)
+  (:require [clojure.string :as s]))
 
-(def sample ["fanatic" "discuss" "natural" "fertile" "dealing" "recruit" "blasted" "bedroom" "records" "regular" "defense" "ceiling" "becomes" "durable"])
-(def sample2 ["guns" "golf" "roof" "juke" "uses" "move" "doom" "busy" "late" "born"])
+(def samples
+  [["fanatic" "discuss" "natural" "fertile" "dealing" "recruit" "blasted"
+    "bedroom" "records" "regular" "defense" "ceiling" "becomes" "durable"]
+   ["guns" "golf" "roof" "juke" "uses" "move" "doom" "busy" "late" "born"]
+   ["coats" "voice" "bands" "razed" "fries" "dream" "hopes" "heard" "check"
+    "green" "spike" "jokes" "typed" "truly" "seals" "aware" "safer" "spied"]
+   ["warlike" "credits" "corners" "battles" "mirrors" "compass" "barrier"
+    "capture" "tunnels" "outlaws" "escapes" "pillows" "complex" "clothes"
+    "wonders" "escort" "copying" "kindred"]])
 
 (defn likeness?
   [s1 s2]
@@ -68,3 +77,15 @@
           (recur (rest m) largest-child (merge {} (first m)))
           (recur (rest m) smallest-largest-child result)))
       result)))
+
+(defn find-best [m]
+  (tiniest-hugest-child (find-similar m)))
+
+(defn -main [& args]
+  (println "Enter list of words")
+  (loop [words (s/split (read-line) #" ")]
+    (when-not (empty? words)
+      (println "Try" (first (first (find-best words)))
+               "then enter the likeness:\n")
+      (recur (get (second (first (find-best words))) (keyword (read-line))))))
+  (println "ggez"))
