@@ -82,10 +82,10 @@
   (tiniest-hugest-child (find-similar m)))
 
 (defn -main [& args]
-  (println "Enter list of words")
+  (println "Enter list of words comma or space delimited")
   (loop [words (s/split (read-line) #" ")]
     (when-not (empty? words)
       (println "Try" (first (first (find-best words)))
                "then enter the likeness:\n")
       (recur (get (second (first (find-best words))) (keyword (read-line))))))
-  (println "ggez"))
+  (println "All done"))
